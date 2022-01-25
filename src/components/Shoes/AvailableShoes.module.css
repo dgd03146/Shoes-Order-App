@@ -1,0 +1,24 @@
+.shoes {
+  max-width: 60rem;
+  width: 90%;
+  margin: 2rem auto;
+  animation: shoes-appear 1s ease-out forwards;
+}
+
+.shoes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes shoes-appear {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
