@@ -1,12 +1,31 @@
-import React from 'react';
-import Cart from '../Cart/Cart';
-import styles from './Modal.module.css';
+import { Fragment } from 'react';
+import ReactDOM from 'react-dom';
+
+import classes from './Modal.module.css';
+
+const Backdrop = props => {
+  return <div className={classes.backdrop} onClick={props.onHide} />;
+};
+
+const ModalOverlay = props => {
+  return (
+    <div className={classes.modal}>
+      <div className={classes.content}>{props.children}</div>
+    </div>
+  );
+};
+
+const portalElement = document.getElementById('overlays');
 
 const Modal = props => {
   return (
-    <div className={styles.backdrop}>
-      <Cart />
-    </div>
+    <Fragment>
+      {ReactDOM.createPortal(<Backdrop onHide={props.onHide} />, portalElement)}
+      {ReactDOM.createPortal(
+        <ModalOverlay>{props.children}</ModalOverlay>,
+        portalElement
+      )}
+    </Fragment>
   );
 };
 

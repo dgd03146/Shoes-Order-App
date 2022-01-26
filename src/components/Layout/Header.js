@@ -3,12 +3,12 @@ import HeaderCartButton from './HeaderCartButton';
 import mainImg from '../../assets/main.jpg';
 import styles from './Header.module.css';
 
-const Header = props => {
+const Header = ({ onShow }) => {
   return (
     <React.Fragment>
       <header className={styles.header}>
         <h2>SHOES</h2>
-        <HeaderCartButton />
+        <HeaderCartButton onShow={onShow} />
       </header>
       <div className={styles['main-image']}>
         <img src={mainImg} alt="Gdragon" />
