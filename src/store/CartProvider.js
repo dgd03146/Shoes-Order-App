@@ -13,11 +13,11 @@ const cartReducer = (state, action) => {
 
     const existingCartItemIndex = state.items.findIndex((item) => item.id === action.item.id); // find index of an itme in an array
     const existingCartItem = state.items[existingCartItemIndex];
+
     let updatedItems;
 
     if (existingCartItem) {
       // depending on whether itme is already in cart
-      // item is alredy in cart
       const updatedItem = {
         ...existingCartItem,
         amount: existingCartItem.amount + action.item.amount
