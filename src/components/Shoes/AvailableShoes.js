@@ -1,44 +1,68 @@
+import { useEffect, useState } from "react";
+
 import React from "react";
 import Card from "../UI/Card";
 import styles from "./AvailableShoes.module.css";
 import Shoe from "./Shoe";
 
-const DUMMY_SHOES = [
-  {
-    id: "m1",
-    name: "Nike Air Force 1 '07 Lv8 Emb",
-    description: "Men Shoes",
-    price: 22.99,
-    url: "https://images.footlocker.com/is/image/FLEU/314104092904_01?wid=763&hei=538&fmt=png-alpha"
-  },
-  {
-    id: "m2",
-    name: "Under Armour Curry Flow Run",
-    description: "Men Shoes",
-    price: 16.5,
-    url: "https://images.footlocker.com/is/image/FLEU/314209504704_01?wid=763&hei=538&fmt=png-alpha"
-  },
-  {
-    id: "m3",
-    name: "Nike Canyon Sandal",
-    description: "Men Flip-Flops and Sandals",
-    price: 12.99,
-    url: "https://images.footlocker.com/is/image/FLEU/314625973004_01?wid=763&hei=538&fmt=png-alpha"
-  },
-  {
-    id: "m4",
-    name: "Nike Zoom Gt Run",
-    description: "Men Shoes",
-    price: 18.99,
-    url: "https://images.footlocker.com/is/image/FLEU/314104071304_01?wid=763&hei=538&fmt=png-alpha"
-  }
-];
-
 const AvailableShoes = (props) => {
+  const [shoes, setShoes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [httpError, setHttpError] = useState();
+
+  useEffect(() => {
+    const fetchMeals = async () => {
+      setIsLoading(true);
+      const response = await fetch("https://react-http-6d8d9-default-rtdb.firebaseio.com/shoes.json");
+
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const responseData = await response.json();
+
+      const loadedMeals = [];
+
+      for (const key in responseData) {
+        loadedMeals.push({
+          id: key,
+          name: responseData[key].name,
+          description: responseData[key].description,
+          price: responseData[key].price,
+          url: responseData[key].url
+        });
+      }
+
+      setShoes(loadedMeals);
+      setIsLoading(false);
+    };
+
+    fetchMeals().catch((error) => {
+      setIsLoading(false);
+      setHttpError(error.message);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section className={styles.ShoesLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={styles.ShoesError}>
+        <p>{httpError}</p>
+      </section>
+    );
+  }
+
   return (
     <Card className={styles.shoes}>
       <ul>
-        {DUMMY_SHOES.map((item) => (
+        {shoes.map((item) => (
           <Shoe id={item.id} key={item.id} item={item} />
         ))}
       </ul>

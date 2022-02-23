@@ -5,6 +5,16 @@
   animation: shoes-appear 1s ease-out forwards;
 }
 
+.ShoesLoading {
+  text-align: center;
+  color: black;
+}
+
+.ShoesError {
+  text-align: center;
+  color: red;
+}
+
 .shoes ul {
   list-style: none;
   margin: 0;
